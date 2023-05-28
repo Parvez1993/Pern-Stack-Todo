@@ -5,20 +5,23 @@ import UnAuthenticatedError from "../errors/unauthenicated.js";
 import prisma from "../client.js";
 import jwt from "jsonwebtoken";
 
-const signToken = (id) => {
-    return jwt.sign({ id }, process.env.JWT_SECRET, {
+const signToken = (user) => {
+    console.log("iddddd",user.id)
+    let id = user.id
+
+    return jwt.sign({id}, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRES_IN,
     });
 };
 
 const createSendToken = async (user, statusCode, req, res) => {
-    const token = signToken(user._id);
+    const token = signToken(user);
     const cookieOptions = {
         expires: new Date(Date.now() + parseInt(process.env.JWT_COOKIE_EXPIRES_IN) * 24 * 60 * 60 * 1000),
         httpOnly: true,
-        secure: req.secure || req.headers["x-forwarded-proto"] === "https",
       };
 
+      console.log("aaaaaaaaaaaaaaa", token)
 
     res.cookie("jwt", token, cookieOptions);
     // user.password = undefined;
@@ -63,7 +66,6 @@ const login = async (req, res, next) => {
 
 
 
-;
 
 
 const register = async (req, res, next) => {
@@ -102,6 +104,7 @@ const register = async (req, res, next) => {
           },
     });
 
+    
     createSendToken(user, StatusCodes.CREATED, req, res);
 };
 

@@ -5,6 +5,7 @@ import router from "./routes/authRoutes.js";
 import notFoundMiddleware from "./middleware/notFoundMiddleware.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
 import pkg from 'pg';
+import todoRouter from "./routes/todoRoutes.js";
 const { Pool } = pkg;
 
 
@@ -28,6 +29,7 @@ app.post("/todos", async(req,res)=>{
 
 
 app.use("/api/auth", router);
+app.use("/api/todo", todoRouter);
 
 app.use(notFoundMiddleware);
 app.use(errorHandlerMiddleware);
