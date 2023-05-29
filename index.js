@@ -9,7 +9,7 @@ import todoRouter from "./routes/todoRoutes.js";
 const { Pool } = pkg;
 
 
-
+console.log("helloss")
 
 const app = express()
 app.use(cors())
